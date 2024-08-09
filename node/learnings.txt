@@ -1,0 +1,14 @@
+Node js tutorial
+
+1. express library for handling requests.
+2. app.get(<path>, (req, res)=>{}) Syntax
+3. app.route(<path>).get((req,res)=>{}).post((req,res)=>{}) for multiple methods on same path. Can be routed.
+4. req.params(url path parameters) and req.query(query parameters)
+5. middlewares intercept request and response and can change requests, response or return the response. Like a filter in Spring boot. Can be chained.
+6. use app.use(express.urlencoded) for setting req.body with form-urlencoded entries.
+
+Mongo
+1. Has basic entity called collections(like table in SQL)
+2. document is an entry in collections.
+3. basic commands (show dbs{show databases}, use <db_name>, show collections, db.coll.find(), db.coll.insert()
+4. It stores data in json array. 

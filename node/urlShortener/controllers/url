@@ -1,0 +1,59 @@
+const URL = require('../models/url');
+const { nanoid } = require('nanoid');
+
+async function handleGetAnalytics(req, res) {
+
+    const urlModel = await URL.find({shortURL: req.params.id}).exec();
+    if (urlModel.length==0) {
+        return res.status(200).json({clicks: 0, analytics: []});
+    }
+    const analytics = urlModel[0].analytics;
+    return res.status(200).json(
+        {
+            clicks: analytics.length,
+            analytics: analytics.map((x)=>{return {"userAgent": x.ip, "timestamp": new Date(x.timestamp)}})
+        }
+    )
+}
+
+async function handleGetRedirectUrl(req, res) {
+    const urlModel = await URL.find({shortURL: req.params.id}).exec();
+
+    if (urlModel.length==0) {
+        return res.status(404).json({error: "Invalid ID"});
+    }
+
+    await URL.findByIdAndUpdate(urlModel[0]._id, 
+        {$push: {
+            analytics: {
+                timestamp: Date.now(),
+                ip: req.headers["user-agent"]
+            }
+        }}
+    )
+    res.redirect(urlModel[0].redirectURL);
+}
+
+async function handleShortenUrl(req, res) {
+    if (req.body==null) {
+        return res.status(400).json({error: "No url provided"});
+    }
+    const urlModel = await URL.find({redirectURL: req.body.url}).exec();
+    if (urlModel.length>0) {
+        return res.status(200).json({"short url": urlModel[0].shortURL});
+    }
+
+    const url = await URL.create({
+        redirectURL: req.body.url,
+        shortURL: nanoid(8),
+
+    });
+    return res.status(201).json({"short url": url.shortURL});
+}
+
+
+module.exports = {
+    handleGetAnalytics,
+    handleGetRedirectUrl,
+    handleShortenUrl
+}

@@ -1,0 +1,13 @@
+const express =  require('express');
+
+const {handleGetAnalytics, handleGetRedirectUrl, handleShortenUrl} = require('../controllers/url');
+
+const router = express.Router();
+
+router.get('/:id', handleGetRedirectUrl);
+
+router.post('/url', handleShortenUrl);
+
+router.get('/url/analytics/:id', handleGetAnalytics);
+
+module.exports = router;
