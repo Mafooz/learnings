@@ -1,0 +1,119 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Uber
+1. User(name, ph no, book cab(drop off location, pickup location, type, expectedAmount), cancelARide(Ride ride), cancelRideRequest(RideRequest), RateARide(Ride))
+2. RideRequest(drop off location, pickup location, expectedAmount) -> sendTo Queue
+2. Driver(id, List<Vehicle>, acceptARequest(drop off location, pickup location, expectedAmount))
+3. Vehicle->Type(Car, Auto, Bike)
+4. Ride(user, driver, generate bill, drop location, pick location, startTime, endTime)
+5. Bill(ride, calculate amount, pay amount, status)
+6. Payment(pay Strategy, amount)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Parking lot
+1. Owner
+2. Vehicle
+3. Entrances(List<Entrance>)
+4. Entrance(generateReceipt(Vehicle))
+4. Receipt(entrance number, Vehicle, entry time)
+5. ParkingLot(Contains all the spots, getASuitableSpot(Vehicle))
+6. Spot(isFilled, Location)
+7. Exit(generateBill(Receipt))
+8. Bill(entryTime, exitTime, amount, Vehicle, Spot, Status, payBill(PaymentStrategy), PaymentStrategy)
+9. PaymentStrategy(pay()) -> implementedBy UPIPayment, CardPayment etc.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Instagram(Feed service)
+1. User(id, username, UserConfiguration, List<User> Followers, List<Posts> posted, List<User> Followings, FollowUser(User), CreatePost(List<byte[]>), DeletePost(postId), CRUD on stories, Feed, loadFeed(feed.load()), List<ChatWindows>)
+2. UserConfiguration(Settings, policies, private, closeFriends etc)
+3. Post (post id, List of slides, which user posted, creation timestamp, getPost)
+4. Feed(List<Posts> CurrFeedList, User, lastFeedLoadedInfo, getMoreFeeds(), reloadFeeds(), newFeedPresent())
+5. Comment(User, Post, Text)
+6. Reels(timestamp, likes, comments, byte[])
+7. Story(timstamp, story id, List<Slides>, User, renderStory(), isSaved());
+8. Slide(post id, byte array data[]);
+9. ChatWindow(List<Messages>, Receiver user);
+10. Messages(messageId, ChatWindow, text, reaction, Message ReplyTo)
+-------------------------------------------------------------------------------------------------
+Elevator
+
+Building: Contains list of floors, list of elevators
+Floor: Contains floor id, floor number, External Button, callForUp(floorId){this registers the call to superElevatorScheduler}, callForDown(floorId){superElevatorScheduler}, SuperElevatorScheduler
+External Button: isUpSet, isDownSet;
+Elevator: id, InternalButton, callForAFloor(Floor), cancelAFloorRequest(Floor), ElevatorController
+ElevatorController: Direction direction, List<int> goingUpList, List<int> goingDownList, moveUp(), moveDown(), int currentFloor, updateCurrentFloor(), Elevator, stopAndOpen(), closeAndResume(direction);
+SuperElevatorScheduler(Singleton): List<Elevators> elevators, getBestPossibleElevator(floorId), registerToThatElevator(Elevator, floorId, Direction);
+InternalButton: List<Boolean> isFloorPressed
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Logging System
+ENUM LoggingLevel -> ERROR, WARNING, INFO, DEBUG, TRACE
+ILogger(has a function log(textMessage, esLoggingLevel))
+ErrorLogger implements ILogger (Has a ILogger field next with value new WarningLogger set in constructor, log() {if(loggingLevel>ERROR.getValue() {next.getValue}})
+Similar for WarningLogger that has next as Info, Info has next as debug, debug has next as trace and trace doesn't have next. It logs diretly.
+Logger implements ILogger. log() {new ErrorLogger.log();}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Null Object Check
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Snake and ladder
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Chess
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Inventory Management like Zepto
+Location(Latitude, longitude)
+WarehouseController(List<WareHouses> warehousecontroller, getWarehouses(location), addWareHouses);
+Warehouse(Location, Inventory)
+Inventory(Map<Item, quantity> inventory, addItem, removeItem, setQuantity);
+Item(Name, id, details, price)
+User(name, List<Order> orders, Cart cart, addItemToCart(orders, item, quantity), removeItem, checkoutCart);
+UserController(List<User> users)
+Order(List<item, quantity> orderList, totalPrice, status, paymentstatus);
+Cart(List<item, quantity> items);
+App(WareHouseController, UserController);
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Social Network(Facebook)
+
+Similar to Instagram
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Splitwise
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Book My show
+User(name, id, List<Bookings> bookings);
+Movie(name, id, description, List<MovieStars> cast, duration);
+City(id, name, location);
+MovieStars(name, id, description);
+Theatre(id, city, name, List<Screens> screens, Map<Movie, int> totalMoviesRunning, addAShow, addAScreen);
+Screen(id, name, List<Shows> shows, addAShow);
+Show(id, name, timing, movie, Map<Seats, price> seats);
+Seat(status, location, baseprice, type);
+Booking(status, bookingId, show, paymentstatus, list<seats> seats);
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Delivery Management in Swiggy
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Google drive
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+File system
+App(List<folder> baseFolder, List<files> files, String currPath);
+Folder(id, List<folder> folders, List<File> files, String path, addFile, addFolder);
+File(id, name, size, byte[] content, modifyContent);
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Money transfer system
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Spotify
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Whatsapp(Chat applications)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

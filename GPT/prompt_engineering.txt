@@ -1,0 +1,96 @@
+Prompt engineering basics:
+
+1. Concise questions: Ask questions to the point.
+2. Context: Provide context when needed.
+3. Input: Provide the input information.
+4. Result type: Provide the result type.
+
+
+
+
+zero shot: Replied in one go.
+few shot: Feedback process.
+
+
+Persona pattern: Setup a context. Ask the AI to become someone. Like assume you are a corporate professional. Set the context first. Then ask questions
+
+Interview Pattern: Ask the AI to ask questions so that they get more context of the problem and then provide an answer.
+
+
+chain of thougts: For complex problems, provide details as to how to solve the problem.
+Like for a mathematical word problem, explain the reasoning for few questions and then pose the problem.
+Use of statements like "lets think step by step" provides better solution in zero shot chain of thoughts.
+
+tree of thoughts: Similar to chain of thoughts, but you ask the AI to have multiple thought processes and combine them.
+Example
+Imagine three different experts are answering this question. All experts will write down 1 step of their thinking, then share it with the group. Then all experts will go on to the next step, etc. If any expert realises they\'re wrong at any point then they leave. The question is...
+
+Bob is in the living room.
+He walks to the kitchen, carrying a cup.
+He puts a ball in the cup and carries the cup to the bedroom.
+He turns the cup upside down, then walks to the garden.
+He puts the cup down in the garden, then walks to the garage.
+Where is the ball?
+
+
+
+
+The researchers remarked that the CoT didn't perform as well as it “lacks mechanisms to try different clues, make changes to decisions, or backtrack.”
+
+Week 2 summary
+
+The various techniques using which text prompts can improve the reliability and quality of the output generated from LLMs are task specification, contextual guidance, domain expertise, bias mitigation, framing, and the user feedback loop. 
+
+The zero-shot prompting technique refers to the capability of LLMs to generate meaningful responses to prompts without needing prior training.
+
+The few-shot prompting technique used with LLMs relies on in-context learning, wherein demonstrations are provided in the prompt to steer the model toward better performance.
+
+The several benefits of using text prompts with LLMs effectively are increasing the explain ability of LLMs, addressing ethical considerations, and building user trust. 
+
+The interview pattern approach is superior to the conventional prompting approach as it allows a more dynamic and iterative conversation when interacting with generative AI models.
+
+The Chain-of-Thought approach strengthens the cognitive abilities of generative AI models and solicits a step-by-step thinking process.
+
+The Tree-of-Thought approach is an innovative technique that builds upon the Chain-of-Thought approach and involves structuring prompts hierarchically, akin to a tree, to guide the model's reasoning and output generation.
+
+
+Chat gpt produced results:
+
+Prompt Engineering Basics:
+Concise Questions: Keep questions direct and succinct.
+Context: Provide necessary context for understanding.
+Input: Include relevant input information.
+Result Type: Specify the expected type of result.
+Notes with Content Meaning Unaltered:
+Techniques for Effective Prompting:
+Zero-shot: Immediate response without training.
+Few-shot: Learning from context.
+Persona Pattern: Establish context before questioning.
+Interview Pattern: AI asks questions for better context.
+Chain of Thoughts: Step-by-step approach for complex problems.
+Tree of Thoughts: Hierarchical structure for guided reasoning.
+Example Problem:
+Bob's activities lead to finding a ball's location.
+
+Improved Notes with Additional Inputs:
+Techniques for Effective Prompting:
+Zero-shot: Enables instant response without prior training. This is beneficial for quick inquiries or simple prompts.
+Few-shot: Utilizes context-rich examples to guide model behavior. Demonstrations within prompts help improve performance and understanding.
+Persona Pattern: Sets up a scenario or persona to establish context before engaging with the AI. This helps direct responses more effectively.
+Interview Pattern: Encourages dynamic and iterative conversations by prompting the AI to ask questions for further clarification. This fosters a more interactive interaction.
+Chain of Thoughts: Breaks down complex problems into manageable steps, fostering a structured approach to problem-solving. This enhances the model's cognitive abilities.
+Tree of Thoughts: Hierarchical structuring of prompts, resembling a decision tree, to guide the model's thought process. This helps in organizing and directing the AI's reasoning effectively.
+Example Problem:
+Bob's series of actions lead to the ball's whereabouts, demonstrating the effectiveness of prompt-guided reasoning.
+
+Week 2 Summary:
+Task Specification: Clearly defining the task or problem in the prompt enhances output quality.
+Contextual Guidance: Providing relevant context within the prompt aids in generating accurate responses.
+Domain Expertise: Incorporating domain-specific knowledge in prompts improves the model's understanding and performance.
+Bias Mitigation: Structuring prompts to address biases helps in producing fair and unbiased outputs.
+Framing: Proper framing of prompts ensures that the model focuses on the intended task or topic.
+User Feedback Loop: Incorporating user feedback into prompts facilitates model improvement and refinement.
+Additional Insights:
+Explainability: Effective use of prompts increases the explainability of AI-generated outputs, enhancing trust and transparency.
+Ethical Considerations: Addressing ethical concerns through well-structured prompts ensures responsible AI usage.
+User Trust: Building user trust through clear and contextually relevant prompts fosters positive interactions with AI models.

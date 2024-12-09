@@ -1,0 +1,11 @@
+1. Spring boot is a framework for writing spring application.
+2. Uses Auto-Configuration(@EnableAutoConfiguration) to auto configure the application.
+ComponentScan is used for scanning the spring beans. 
+3. @SpringBootApplication consists of EnableAutoConfiguration, ComponentScan and SpringBootConfiguration.
+4. @RestController, @ControllerAdvice, @GetMapping, @RequestMapping, @ResponseBody
+5. @Autowired for specifying injection of an spring bean into another.
+6. @Scope is for defining the scope of the bean. Singleton, Request, Prototype.
+7. @Value for reading the value from the env variables.
+8. @Qualifier to resolve if there are two implementations for an interface.
+9. @Profile for segregation of prod and dev env.
+10. @PathVariable to define the path variable.

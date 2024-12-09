@@ -1,0 +1,97 @@
+HLD
+Start
+1. Requirements gathering
+2. High level happy flow
+3. Capacity Estimation(Traffic/storage estimation)
+4. Segregate services and database design
+5. API design
+6. Describe each components
+7. Optimise using cache, CDN, api gateway, sharding, consistent hashing etc
+
+
+Swiggy
+Whatsapp
+Facebook
+Github
+
+
+Databases
+
+1. SQL database
+Advantages
+  SQL support
+  ACID transactions (atomicity, consistency, isolation, and durability)
+  Indexing and partitioning support
+Disadvantages
+  Poor support for unstructured data / complex types
+  Poor event handling optimization
+  Complex / expensive scaling
+Examples: Oracle DB, MySQL, PostgreSQL.
+
+2. Document oriented databases
+
+Advantages
+  The scheme is free of charge
+  There is no need to always write all the fields in each record
+  Good support for complex types
+  Suitable for OLTP
+
+Disadvantages
+  Poor transaction support
+  Weak analytical support
+  Complex/expensive scaling
+
+Examples: MongoDB.
+
+3. In-memory databases
+Advantages:
+  Quick Writing
+  Quick Read
+
+Disadvantages:
+  High reliability
+  Expensive scaling
+Examples: Redis, Tarantool, Apache Ignite.
+
+4. Databases with wide columns
+Advantages:
+  Quick entry line by line
+  Quick Key Reading
+  Good scalability
+  High availability
+
+Disadvantages:
+  Key-value format
+  No analytics support
+Examples: Cassandra, HBase.
+
+5. Columnar databases
+Advantages
+  Quick read column by column
+  Good analytical support
+  Good scalability
+
+Disadvantages
+  Only suitable for batch inserts
+Examples: Vertica, Clickhouse.
+
+6. Search Engine
+Advantages
+  Quick access by any word
+  Good scalability
+
+Disadvantages:
+  Only suitable for batch inserts
+  Poor analytical support
+Examples: Elastic.
+
+7. Graph database
+Advantages:
+  Graph data structure
+  Managed relationships between entities
+  Flexible designs
+
+Disadvantages:
+  Special query language
+  Difficult to scale
+Examples: Neo4j.

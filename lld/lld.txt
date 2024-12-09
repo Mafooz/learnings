@@ -1,0 +1,28 @@
+LLD patterns:
+
+Creational Pattern: The set of design pattens that govern how an object will be created. 
+Behavioural Pattern: The set of design patterns that alter the behaviour of the object.
+Structural Pattern: The set of design patterns that alter the structure of the objects.
+
+
+Types of creational pattern:
+1. Prototype design pattern: Used when we need to clone an existing object.
+2. Singleton design pattern: The constructor is private and there is a method that helps to keep only one instance of the object.
+3. Factory design pattern: Returns a type of object based on input.
+4. Abstract factory pattern: Returns a factory based on input
+5. Builder design pattern: Every set method returns the object, so we can build the object one by one. 
+
+Types of Behavioural Pattern:
+1. State pattern -> All the behaviour of a class is defined in an interface and we creare concrete classes out of these interfaces. Concrete class represent a state. Example is Vending machine state which has insertCoin and dispenseItem. Now IdleState is an impl of vending machine only implementing insertCoin and dispenseState only implementing dispenseItem. There is a change state function in Vending Machine.
+2. Observer pattern: Publisher Subscriber model. There is a publisher and there are multiple observers. The publisher has a list of observers and can register/delete observers. The publisher when publishes a change, iterates over all the observers, calling its required methods, from which the observer can change its behaviour. 
+3. Strategy pattern: If we have a behaviour and we have multipe ways to implement it, we can have multiple implementations, and use the one that is required. Like types of payments.
+4. Chain of responsibility pattern: This has multiple impl of an interface lined up. If one can't satisfy the call, it passes to its next one. The next impl for a current impl is defined in its constructor.
+5. Template pattern: When there is a specific way to do a set of tasks, but the tasks can be flexible. Like payment flow, we have 5 steps one after other, like validation, acceptance etc. These steps can have multiple impls. So here we can use template pattern.
+6. Interpreter pattern: Defines a grammer for interpreting and evaluating an expression. There could be non-terminal values, and terminal values, non terminal values split into more non-terminal values.
+7. Command pattern: Create object for each command. Like turning on/off an AC. If we call the AC.turnOn command directly, it will be tightly coupled. So instead, make an interface ICommand and then implement multiple commands. The logic for executing a command is in the excute method of the command, and if there is some changes, we only need to change the affected commands.
+8. Iterator pattern: Used when there is a collection of objects. Collection of objects is called Collector. Collector provides a way to access iterator. Iterator has two methods, hasNext and next. The logic for these are implemented in implementation of iterator.
+9. Visitor pattern: Allows addition of new methods without changing the object and encourage open closed principle.
+10. Mediator pattern: Allows objects to talk via a mediator. Like an auction.
+11. Memento pattern: Undo capability. Has three parts, Originator(actual object), Momento(the part which needs to be saved of originator) and caretaker(a list of momento).
+
+Types of Structural Pattern

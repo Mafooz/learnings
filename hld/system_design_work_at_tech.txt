@@ -1,0 +1,216 @@
+````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+System design
+
+Performance: The amount of work that the system does. Increasing performance means that the system should be able to do more amount of work.
+Scalability: A service is said to be scalable if when we increase the resources in a system, it results in increased performance in a manner proportional to the resources added.
+
+Both are good to aim at.
+
+Latency: Latency is the time required to perform some action or to produce some result. Latency is measured in units of time -- hours, minutes, seconds, nanoseconds, or clock periods.
+Throughput: Throughput is the number of actions executed or results produced per unit of time.
+
+Low latency and high throughput.
+
+````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+CAP Theorem:
+Consistency-> How consistent is the system in providing accurate info.
+Availability-> How available is the system. Low downtime. Usually measured in 9s.
+Partition Tolerance-> How much is a system resilient and stable to failure. Connection failure or service down.
+
+
+CAP Theorem states that you can only support two out of the three guarantees (Consistency, Availability, and Partition Tolerance) in a distributed system.
+
+
+Since networks are bound to fail, you need to support Partition Tolerance in a distributed system which leaves us with two options:
+
+CP (Consistency and Partition Tolerance): The system will either give a consistent response or it will fail. It will never give an incorrect response. Facebook and twitter, not always accurate response is expected, but it should be available as high traffic.
+
+AP (Availability and Partition Tolerance): The system will always give a response even though it might be inconsistent. Banking and payment system, not needed to be up all the time, but response must be accurate always.
+
+````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+Designing a system.
+
+Start off with an application server and a database on the same machine. 
+Then traffic starts. Need to scale.
+
+Move out the database on a different machine. Start scaling the application server. 
+
+Vertical Scaling: Easy and simple, but limited resources and rigid and not flexible. Single point of failure. Underutilization of resources.
+
+Horizontal Scaling: Scaling to multipe instances. A little complicated management, but very flexible, scales easily to any load and proper utilization of resources. Needs stateless nodes.
+
+
+Load Balancer: Stands in front of horizontal scaled systems to divide the load. 
+
+Caching static resources: For decreasing latency, static resouces can be cached. Either on browser or on CDN. CDN is a network of servers that stores resources at different locations.
+
+Async processing: For processes that don't require immediate response, we can have async processing. Server gets the request, sends 202 Accepted. Will put the request in a queue. The worker nodes when they get free pick up a request process it and notify the completion of the task. Server is the producer and Workers are consumers.
+
+```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+Database scaling:
+
+Since database is statefull, if we scale them, we need to make sure that data is consistent.
+
+Redundancy: Redundancy means duplicating a component to ensure that our system continues to function even if there is a failure. Redundancy is what we created in our application servers to horizontally scale it.
+
+Replication: Databases are stateful systems. Redundant copies need to stay in sync so that they represent the same state. We can do that by replicating the changes to the other databases. This process is known as replication.
+
+Replication schemes:
+Synchronous replication: Changes are propagated to all the database nodes before considering the transaction successful. If any of the operations fails, the entire transaction fails and the changes are rolled back.
+Asynchronous replication: Changes are propagated asynchronously after the transaction has been considered successful.
+Semi-synchronous replication: The replication is partially synchronous. A transaction is considered successful after getting replicated on x number of nodes. The node does not wait for acknowledgment from other nodes.
+
+Type of replicas:
+
+Read replica: Reads are done on this replica. 
+Write replica: Writes are done on this replica. Then the changes are propogated to read replicas. These may or may not support read.
+
+Types of replication architecture:
+
+Master slave architecture: Master gets the read and write requests. It replicates the changes to slaves. Slaves only get read requests. In case if master dies, one of the slaves is promoted. We can scale by adding more slaves. There is no single point of failure. Replication adds overhead. It might add latency if we choose synchronous replication. It might result in inconsistency if we choose asynchronous replication. The load on the master node might still be high if the number of 'writes' is high.
+
+Multi-master architecture: All the nodes act as master and read and write requests are distributed. We can scale the system by adding redundancy if traffic increases. Replication adds a lot of complexity to the system.
+
+
+````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+Partitioning and sharding:
+To avoid the load on a database node, we can split the data in a way that the load is distributed across different nodes.
+
+Vertical Splitting or partitioning: 
+Loosely coupled sub-databases. Example: Tables related to Users and tables related to Products on different databases. Helps in load distribution. Joins are not possible and application logic becomes complex.
+
+Horizontal Splitting (Sharding):
+
+The data is split based on some criteria. The different nodes will contain the same tables but with different data.
+
+Examples:
+User data with initials A-M on the first node and rest on the other.
+User data for each continent on different nodes.
+Product data for each category on different nodes.
+
+Helps in load distribution. Joins are not possible and application logic becomes complex.
+
+Most NoSQL databases have sharding built-in. This makes sharding a preferred way of scaling NoSQL databases.
+
+Indexing and Denormalization: We can do further optimizations like Indexing and Denormalization to make 'reads' faster. These techniques will make the 'writes' slower though. We should apply these only if that's acceptable.
+
+````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+In memory caching:
+In-memory caches are caches that store the data in-memory. Caching is the technique of using cache to store data for faster data retrieval.
+Redis and Memcached are popular in-memory cache/datastores. They allow storing data as key-value pairs.
+Advantages are latency improvement and reduced database load.
+It can come with inconsistency as cache might not be updated. It is expensive in terms of money and requires complex application logic.
+
+
+````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+SQL database
+The relational model organizes data into one or more tables (or "relations") of columns and rows, with a unique key identifying each row. Rows are called records and columns attributes. Each table/relation is an entity. Database based on relational model are relational database. Examples: Oracle, MySQL, MariaDB, MS SQL Server, PostgressSQL, SQLLite.
+
+NoSQL database
+A NoSQL ("non-relational") database provides a mechanism for storing and retrieving data modeled in means other than the tabular relations used in relational databases. NoSQL databases are increasingly used in big data and real-time web applications.
+MongoDB, Redis, Memcached, Cassandra, DynamoDB, Elasticsearch, Neo4J.
+
+There are different types of NoSQL databases based on how the data is modeled. The most popular types of NoSQL databases are:
+
+Key-Value Store: Data is stored as key-value pairs. Examples: Redis, Memcached, DynamoDB.
+Document Store: Data is stored as documents (JSON, XML, etc). Examples: MongoDB, CouchDB, Elasticsearch
+Wide-Column Store: Data is stored in tables but the names and format of the columns can vary from row to row in the same table. Examples: HBase, BigTable, Cassandra, DynamoDB.
+Graph Database: Data is stored as graph nodes with edges representing the relationship between the nodes. Examples: Neo4J.
+
+Differences:
+Scalability: NoSQL databases can be horizontally scaled (add more servers) whereas SQL databases cannot and need to be vertically scaled (add bigger server).
+Normalization: In general, it is recommended to normalize tables in a SQL Database whereas denormalization is preferred in NoSQL databases.
+Joins: Since data is generally denormalized in NoSQL databases, joins are not required. Joins are generally required in SQL databases.
+ACID Transactions: Most NoSQL databases do not support ACID Transactions whereas SQL databases support ACID transactions.
+
+What should we use?
+
+We should use NoSQL if we are looking for:
+flexible data models,
+fast queries through denormalization,
+horizontal scaling,
+ease of development
+
+We should use SQL if we are looking for:
+standard relational data model,
+fixed schema,
+ACID transactions,
+less data duplication,
+less storage,
+faster inserts/updates
+
+````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+What to do in System Design interview
+Assume that interview lasts for 45-60 mins.
+
+1. Gather Information 10-15mins
+Your design is not expected to consider all the functionalities.
+Ask what are the requirements and information about the app.
+
+1.1. Functional Requirements
+Gathering the features (Functional Requirements) that the chat application should have.
+After every question, wait for the interviewer to answer and note it down.
+Examples:
+Do we need to support only 1:1 chat or group chats as well?
+Do we need to support only text messages or media as well?
+Do we need read receipts? [Discuss the specifics]
+Do we need 'Online' and 'Last Seen' timestamps?
+Do we need to support audio/video calls? If yes, do we need to support group calls as well?
+Do we need to support message broadcasting?
+Do we need to support status updates (images/videos/text)?
+Should the chat messages be stored just on the device? How do we provide backup? Do we support multiple devices?
+Do we need to support end-to-end encryption?
+What profile information would each user have and which of them would be public? [This should be a discussion. Provide options that you can come up with]
+Any other requirements that we would want to have?
+
+1.2. Non-Functional Requirements
+You need to clarify the non-functional requirements from the interviewer.
+Examples:
+
+How many users would be concurrently using the service on average and at peak times?
+How many messages do we expect to be sent per day?
+What would be the maximum number of characters in each text?
+What is the expected average latency for users to get the messages after coming online?
+What can be the maximum size of the group?
+Would the media be downloaded locally or does it need to be loaded every time it is opened?
+How big could the media files be?
+What would be the Read/Write ratio for the different functionalities?
+Indirectly ask if we should prefer consistency or availability for the various major features. Try to figure out if we need ACID transactions.
+	Examples:
+	In the case of chat, if we are storing messages permanently, the interviewer would 	most likely prefer consistency.
+	In the case of last-seen, the interviewer would most likely prefer availability.
+	In the case of status, the interviewer would most likely prefer availability.
+
+These questions would help you identify the traffic, resource requirements, latency requirements, etc.
+
+
+2. API Design 2-3 min
+List down all the API endpoints that you need to expose from your system.
+Make sure to double-check if you've supported all the approved requirements.
+
+3. High-Level Design and Discussion 15-20min
+
+Let's consider a sample high-level design of a given system. A basic overview of how the high-level design of a system might have these components:
+
+Clients: Multiple mobile devices and laptops denoting the clients.
+CDN: The clients would get static data from the CDN.
+Load balancer: The clients would talk to a load balancer for dynamic data.
+Application servers: There would be many application servers behind the load balancer.
+Database: The application servers would talk to one or more SQL/NoSQL servers with some replication/sharding/partitioning involved.
+Microservices: The application servers would talk to other internal servers if the system has a microservices architecture. Example: Auth Service.
+Queue: The application servers would add some events/messages to a queue with certain workers listening to the queue for events.
+Cache: The application servers might fetch data from the cache before hitting the database.
+
+4. Metric Estimation 5-10 mins
+Estimate the different metrics of the different functionalities and your entire system. 
+The common metrics that you should estimate are:
+Throughput
+Latency
+Memory
+Storage

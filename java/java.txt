@@ -1,0 +1,93 @@
+JAVA 
+Heap and stack
+1. Heap is the place where objects are stored. 
+2. Stack keeps the reference of the object and also functional stack.
+3. Garbage collector checks for any objects in heap that has no reference and then deletes it. Short term gc(every ~3 secs) and long term gc(every ~30 mins). 
+4. Short term gc collects objects from level 1. Objects that survive the short term gc are promoted to level 2. Level 2 and 3 objects are cleaned up by long term gc.
+5. Metaspace for keeping the static and class variables.
+6. String Constant pool(specific location in heap) when you do String a="hello". But when you do String c = new String("hello"), it creates String object in heap.
+Collection
+1. Iterable is the base interface and collection extends it. 
+2. ArrayList, Vector, Set, Queue, Stack are all provided by java.util.Collection.
+3. Collections is another package that allows operations on Collection package, like sorting, deleting, reversing etc.
+4. Reason for Collection is to have same method names for all types of Arrays, List, Set etc.
+5. Map is not below iterable.
+
+Multithreading
+
+1. Every process has its own jvm instance which has certain portion of jvm's heap size. The values of the heap size can be given in jvm options like -Xmns and -Xmxx.
+2. Every jvm instance has code segments(machine code, sharable among threads) and data segments(static and global variables, sharable among threads), heap section(object storage,sharable among threads). 3. Apart from this, it has Registers(helps in context switch, keeps intermediate state of the processing of thread), Stack and Counter(pointer to instruction being executed). These last three are specific to thread and are not sharable.
+4. Runnable interface and Thread class
+5. Create a new Thread using new Thread(<Runnable Object>).
+6. Runnable object is an object of a class that implements runnable interface. This interface has one method run();
+7. Thread.start() calls the run method of the runnable object.
+
+Livecycle of thread
+		  ---------------------------------------------------------------------->---------------
+		 |											|
+		 |		|----------------------------------------|				|
+		 |		|					 |				|
+		New ---(start)--|---> Runnable <------------> Running----|--------------------------> Terminated
+				|	    	 	  	  	 |				|
+				|-----------|-----------|----------|-----|				|
+					    |           |          |					|
+					(IO Operation/  |          | 					|
+					acquire lock)	|	Call wait()				|
+					    |		|	  |					|
+					    |		|	  |					|
+					  Blocked	|	 Waiting--------------->-------------Call stop()
+					    |		|						|
+					    -----------	|------------------------------>----------------|
+						    Sleep/Join						|
+							|						|
+							|						|
+						   Timed waiting----------------------->----------------|
+
+
+When thread in blocked or waiting state, it releases all monitor locks. Doesn't release monitor locks when in timed waiting.
+
+Monitor Locks:
+
+1. Each object will have its monitor lock(Not sharable among objects).
+2. Synchronised blocks/methods allows only one thread to enter at a time. If a lock is aquired by a thread(it entered the synchronised block), it will stop all other threads to wait that want to enter the synchronised block(could be a different syncronised block){important}.
+Example: Thread1 enters synchronised block 1 and acquires monitor lock. Thread 2 will have to wait for entering any synchronised block(of the same object) unless the monitor lock is released.
+3. Suspend, resume and stop are depricated. Suspend is wait without releasing monitor lock. This could cause deadlock. Resume is similar to notify. stop terminates the thread abruptly without releasing locks and cleaning up space.
+4. thread1.join() will suspend the all the threads at that point to allow thread1 to complete. Once thread1 terminates, all other threads at point, when join is called will run. Similar to await async in js.
+5. Thread priority just a hint to scheduler. 1 is lowest, 10 is highest, 5 is default. Child thread inherits priority from parent if not defined.
+6. Daemon thread is a thread that terminates itself if all user threads(normal threads) complete(terminated). Usage: Logging, logging will work till the program is alive. Similarly, Garbage collector and auto save.
+
+
+Locks:
+Monitor locks work per object. Two different objects accessing one critical section will not be able to stop one another just by acquiring monitor locks.
+
+1. We have custom locks for above. 
+a) Reentrant lock: Use lock.lock() to acquire lock on a critical section and use lock.unlock() to release it. Once lock is aquired, no other thread can enter that piece of code. Works on code level rather than object level.
+b) Shared lock allows to read by multiple threads. If thread1 acquires a shared lock on CS1 to read, thread2 can aquire shared lock on CS1 to read, but not to write.
+c) Exclusive locks are for write. No thread should acquire any lock on CS to allow exclusive lock.
+d) Read Write lock involves shared lock and exclusive lock. Multiple threads can take the shared lock, but only one can take exclusive lock. Use lock.readLock().lock() for acquiring the readlock. lock.writeLock().lock() for acquiring the writelock.
+e) Optimistic locking is a process where we check if there has been any write operations before the read completes. If yes, we rollback. Optimistic locking doesn't actually acquire a lock. It returns a version, and the version changes if write is performed.
+f) Stamped lock uses optimistic locking for read and write lock for write. So if some thread is reading and other thread performs a write, the stamped lock will be invalidated and we can rollback.
+g) semaphores allow multiple threads to access the critical section at one time. There is an upper limit. Usefull in connection pool.
+h) wait and notify are for monitor locks that work on an object. For critical sections, we use await() and signal().
+
+
+Concurrency without locks.
+
+CAS: Compare and swap. Similar to optimistic locking.
+1. It is low level operation. CPU provide it.
+2. Atomic. Means an operation won't be interfered untill completion even it has multiple threads or cores.
+3. All modern processes provide it.
+Involves three main parameter
+a) Memory location where variable is stored.
+b) expected value: what value should be present at that location.
+c) new value: what should it be replaced with.
+Read the data from memory location, checks if it matches the expected value and if yes, updates it.
+ABA issue can occur. Lets suppose the expected value was A, but some other thread changes it to B and then again A. So CAS will see no difference and will change the value to new value. Can be solved using versioning.
+
+Atomic variables:
+Uses CAS. Makes operation set {read, modify, update} thread-safe. eg: counter++ is a read of counter, modify it to counter+1, and then update. This is not threadsafe as two threads can intertwine. Hence atomic variables.
+
+Volatile:
+Each CPU core has an L1 cache, and L1 cache has L2 cache and then there is RAM. 
+If a CPU core(probably a thread) updates a variable value, that is reached till L1 but the other L1 is not yet synched and other CPU core gets a miss at L1. It checks the memory and gets stale value. 
+Volatile helps in this situation by directly reading and writing in RAM.
